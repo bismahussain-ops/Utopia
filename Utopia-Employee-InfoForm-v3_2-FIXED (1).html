@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utopia Industries — Employee Information Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#060E24;--navy2:#0A1535;
+  --accent:#00C4A7;--accent2:#0EA5E9;
+  --emerald:#10B981;--amber:#F59E0B;--rose:#F43F5E;--violet:#8B5CF6;
+  --slate:#64748B;--slateL:#94A3B8;
+  --border:rgba(255,255,255,0.08);--card:rgba(255,255,255,0.04);
+  --text:#E2E8F0;--textD:#94A3B8;--white:#fff;
+  --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:linear-gradient(160deg,#030B1A 0%,#060E24 50%,#0A1535 100%);color:var(--text)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:4px}
+
+/* ── TOPBAR ── */
+.topbar{
+  background:rgba(6,14,36,0.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.topbar-logo-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--navy);font-family:'Syne',sans-serif}
+.topbar-logo-text{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white)}
+.topbar-logo-text span{color:var(--accent)}
+.topbar-badge{background:rgba(0,196,167,0.12);border:1px solid rgba(0,196,167,0.3);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.6px;text-transform:uppercase}
+
+/* ── PROGRESS BAR ── */
+.progress-strip{height:3px;background:rgba(255,255,255,0.06)}
+.progress-strip-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s ease}
+
+/* ── CONTAINER ── */
+.container{max-width:820px;margin:0 auto;padding:28px 20px 60px}
+
+/* ── WELCOME CARD ── */
+.welcome-card{
+  background:linear-gradient(135deg,rgba(0,196,167,0.08),rgba(14,165,233,0.05));
+  border:1px solid rgba(0,196,167,0.2);border-radius:16px;
+  padding:24px 28px;margin-bottom:28px;
+  display:flex;align-items:center;gap:20px;
+}
+.welcome-avatar{
+  width:56px;height:56px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:700;color:var(--navy);font-family:'Syne',sans-serif;
+}
+.welcome-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--white)}
+.welcome-meta{font-size:13px;color:var(--textD);margin-top:4px}
+.welcome-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11.5px;font-weight:600}
+.tag-blue{background:rgba(14,165,233,0.12);color:#7DD3FC}
+.tag-green{background:rgba(16,185,129,0.12);color:#6EE7B7}
+.tag-amber{background:rgba(245,158,11,0.12);color:#FDE68A}
+.tag-violet{background:rgba(139,92,246,0.12);color:#DDD6FE}
+
+/* ── STEP NAVIGATOR ── */
+.step-nav{display:flex;align-items:center;margin-bottom:28px;overflow-x:auto;padding:4px 0}
+.step-nav-item{display:flex;align-items:center;flex:1;min-width:80px;position:relative}
+.step-nav-item:not(:last-child)::after{content:'';flex:1;height:2px;background:rgba(255,255,255,0.08);margin:0 4px;min-width:12px}
+.step-nav-item.done::after{background:var(--accent)}
+.step-dot{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--textD);flex-shrink:0;transition:all .3s}
+.step-nav-item.active .step-dot{background:var(--accent);border-color:var(--accent);color:var(--navy);box-shadow:0 0 0 4px rgba(0,196,167,0.15)}
+.step-nav-item.done .step-dot{background:var(--emerald);border-color:var(--emerald);color:var(--white)}
+.step-label{font-size:10px;color:var(--textD);margin-top:4px;white-space:nowrap;text-align:center;display:block;position:absolute;top:32px;left:50%;transform:translateX(-50%)}
+.step-nav-item.active .step-label,.step-nav-item.done .step-label{color:var(--accent)}
+.step-wrap{position:relative;display:flex;flex-direction:column;align-items:center}
+
+/* ── SECTION CARD ── */
+.section-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:24px;margin-bottom:20px;
+}
+.section-title{
+  font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);
+  margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.section-icon.teal{background:rgba(0,196,167,0.15)}
+.section-icon.blue{background:rgba(14,165,233,0.15)}
+.section-icon.amber{background:rgba(245,158,11,0.15)}
+.section-icon.violet{background:rgba(139,92,246,0.15)}
+.section-icon.green{background:rgba(16,185,129,0.15)}
+.section-icon.rose{background:rgba(244,63,94,0.15)}
+
+/* ── FORM FIELDS ── */
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.form-group{display:flex;flex-direction:column}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:11.5px;font-weight:700;color:var(--slateL);letter-spacing:.6px;text-transform:uppercase;margin-bottom:7px}
+.form-label .req{color:var(--rose);margin-left:2px}
+.form-input,.form-select,.form-textarea{
+  padding:10px 14px;background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);border-radius:9px;
+  color:var(--white);font-size:13.5px;font-family:'DM Sans',sans-serif;
+  transition:all .2s;outline:none;width:100%;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);background:rgba(0,196,167,0.07);box-shadow:0 0 0 3px rgba(0,196,167,0.1)}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--slate)}
+.form-select option{background:#0A1535;color:var(--white)}
+.form-textarea{resize:vertical;min-height:72px}
+.form-hint{font-size:11px;color:var(--slate);margin-top:5px}
+.form-error{font-size:11.5px;color:#FDA4AF;margin-top:4px;display:none}
+.form-group.error .form-input,.form-group.error .form-select{border-color:rgba(244,63,94,0.5)}
+.form-group.error .form-error{display:block}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{
+  border:2px dashed rgba(0,196,167,0.25);border-radius:10px;
+  padding:20px;text-align:center;cursor:pointer;transition:all .2s;
+  background:rgba(0,196,167,0.03);
+}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(0,196,167,0.07)}
+.upload-zone input[type="file"]{display:none}
+.upload-icon{font-size:28px;margin-bottom:8px}
+.upload-label{font-size:13px;color:var(--textD);line-height:1.6}
+.upload-label strong{color:var(--accent)}
+.upload-list{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.upload-item{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(0,196,167,0.06);border:1px solid rgba(0,196,167,0.15);
+  border-radius:8px;padding:8px 12px;font-size:12.5px;
+}
+.upload-item-name{flex:1;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.upload-item-size{color:var(--textD);font-size:11.5px;white-space:nowrap}
+.upload-item-remove{background:none;border:none;color:var(--rose);cursor:pointer;font-size:14px;padding:0 4px;line-height:1}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:9px;border:none;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--navy);box-shadow:0 4px 14px rgba(0,196,167,0.3)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,196,167,0.45)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-secondary{background:rgba(255,255,255,0.07);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:rgba(255,255,255,0.1)}
+.btn-lg{padding:13px 28px;font-size:15px}
+
+/* ── STEP ACTIONS ── */
+.step-actions{display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+.step-counter{font-size:12.5px;color:var(--textD)}
+
+/* ── SUCCESS SCREEN ── */
+.success-screen{text-align:center;padding:48px 24px}
+.success-icon{width:80px;height:80px;border-radius:50%;background:rgba(16,185,129,0.15);border:2px solid var(--emerald);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 20px}
+.success-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;color:var(--white);margin-bottom:8px}
+.success-sub{font-size:14px;color:var(--textD);line-height:1.7;max-width:420px;margin:0 auto 24px}
+.info-box{background:rgba(0,196,167,0.06);border:1px solid rgba(0,196,167,0.2);border-radius:10px;padding:16px 20px;text-align:left;max-width:480px;margin:0 auto 20px}
+.info-box-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:13px}
+.info-box-row:last-child{margin-bottom:0}
+.info-box-label{color:var(--textD);min-width:130px;font-size:12px;flex-shrink:0}
+.info-box-val{color:var(--text);font-weight:500}
+
+/* ── INVALID TOKEN ── */
+.invalid-screen{text-align:center;padding:64px 24px}
+.invalid-icon{font-size:56px;margin-bottom:16px}
+.invalid-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:8px}
+.invalid-sub{font-size:14px;color:var(--textD);line-height:1.7}
+
+/* ── LOADING ── */
+.loading-screen{text-align:center;padding:80px 24px}
+.spinner{width:40px;height:40px;border:3px solid rgba(0,196,167,0.2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── TOAST ── */
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{display:flex;align-items:flex-start;gap:12px;background:#0A1535;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;padding:14px 18px;min-width:300px;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,0.5);pointer-events:all;animation:toastIn .3s cubic-bezier(0.22,1,0.36,1)}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.toast.success{border-left-color:var(--emerald)}
+.toast.error{border-left-color:var(--rose)}
+.toast-icon{font-size:18px;flex-shrink:0}
+.toast-body-title{font-size:13px;font-weight:700;color:var(--white)}
+.toast-body-msg{font-size:12px;color:var(--textD);margin-top:2px}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:var(--border);margin:20px 0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .form-grid{grid-template-columns:1fr}
+  .welcome-card{flex-direction:column;text-align:center}
+  .step-nav{gap:0}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-logo-icon">U</div>
+    <div class="topbar-logo-text"><span>Utopia</span> Industries</div>
+  </div>
+  <div class="topbar-badge">Employee Information Form</div>
+</div>
+<div class="progress-strip"><div class="progress-strip-fill" id="progressFill" style="width:0%"></div></div>
+
+<!-- LOADING -->
+<div class="container" id="loadingScreen">
+  <div class="loading-screen">
+    <div class="spinner"></div>
+    <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:600;color:var(--white)">Loading your form…</div>
+    <div style="font-size:13px;color:var(--textD);margin-top:6px">Verifying your secure link</div>
+  </div>
+</div>
+
+<!-- INVALID TOKEN -->
+<div class="container" id="invalidScreen" style="display:none">
+  <div class="invalid-screen">
+    <div class="invalid-icon">🔒</div>
+    <div class="invalid-title">Invalid or Expired Link</div>
+    <div class="invalid-sub">This form link is invalid or has expired.<br>Please contact your HRBP for a new link.</div>
+  </div>
+</div>
+
+<!-- MAIN FORM APP -->
+<div class="container" id="formApp" style="display:none">
+
+  <!-- WELCOME CARD -->
+  <div class="welcome-card">
+    <div class="welcome-avatar" id="welcomeAvatar">?</div>
+    <div>
+      <div class="welcome-name" id="welcomeName">Welcome!</div>
+      <div class="welcome-meta" id="welcomeMeta">Please complete all sections of this form.</div>
+      <div class="welcome-tags">
+        <span class="tag tag-blue" id="tagDOJ">DOJ: —</span>
+        <span class="tag tag-green" id="tagSite">—</span>
+        <span class="tag tag-amber" id="tagHRBP">HRBP: —</span>
+        <span class="tag tag-violet" id="tagDesig">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP NAVIGATION -->
+  <div class="step-nav" id="stepNav">
+    <!-- Injected by JS -->
+  </div>
+
+  <!-- STEP PAGES -->
+  <div id="stepPages">
+    <!-- Injected by JS -->
+  </div>
+
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div class="container" id="successScreen" style="display:none">
+  <div class="success-screen">
+    <div class="success-icon">✅</div>
+    <div class="success-title">Form Submitted Successfully!</div>
+    <div class="success-sub">Your Employee Information Form has been received. Your HRBP and HR Operations team have been notified automatically.</div>
+    <div class="info-box" id="successInfo"></div>
+    <div style="font-size:12.5px;color:var(--textD);margin-top:16px;line-height:1.7">
+      <strong style="color:var(--text)">What happens next?</strong><br>
+      ① HR Operations will review your information<br>
+      ② You will receive a confirmation email<br>
+      ③ Your HRBP will follow up regarding next steps
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════
+   CONFIGURATION
+═══════════════════════════════════════════ */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbya3LjdGHXU5UGUvCzKCIC5UECmmYXa1CvmVWclYXbtSSrutRIvwathOQpvFlAyaT3x/exec';
+const API_KEY = 'UTOPIA_SECURE_2026';
+const EF_STORAGE_KEY = 'utopia_employee_forms';
+
+/* ═══════════════════════════════════════════
+   STEPS DEFINITION
+═══════════════════════════════════════════ */
+const STEPS = [
+  { id: 1, label: 'Personal',   icon: '👤' },
+  { id: 2, label: 'CNIC',       icon: '🪪' },
+  { id: 3, label: 'Family',     icon: '👨‍👩‍👧' },
+  { id: 4, label: 'Contact',    icon: '📞' },
+  { id: 5, label: 'Bank',       icon: '🏦' },
+  { id: 6, label: 'Education',  icon: '🎓' },
+  { id: 7, label: 'Experience', icon: '💼' },
+  { id: 8, label: 'Documents',  icon: '📄' },
+  { id: 9, label: 'Review',     icon: '✅' },
+];
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+const STATE = {
+  step: 1,
+  joiner: null,
+  token: null,
+  formData: {},
+  uploads: {},   // key → [File, ...]
+  uploadMeta: {} // key → [{name,size,type}, ...]
+};
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+async function init() {
+  const params = new URLSearchParams(window.location.search);
+  STATE.token   = params.get('token') || '';
+  const jid     = params.get('jid')   || '';
+  const name    = params.get('name')  || '';
+  const email   = params.get('email') || '';
+  const doj     = params.get('doj')   || '';
+  const desig   = params.get('desig') || '';
+  const site    = params.get('site')  || '';
+  const dept    = params.get('dept')  || '';
+  const hrbp    = params.get('hrbp')  || '';
+
+  // Must have at least a token or jid
+  if (!STATE.token && !jid && !name) {
+    showScreen('invalid');
+    return;
+  }
+
+  // Build joiner from URL params immediately (no waiting on GAS)
+  STATE.joiner = { id: jid, name, email, doj, designation: desig, site, dept, hrbp, token: STATE.token };
+
+  // Try to enrich from GAS if token provided
+  if (STATE.token) {
+    try {
+      const r = await gasGet({ action: 'GET_JOINER_BY_TOKEN', token: STATE.token });
+      if (r && r.success && r.joiner) {
+        const g = r.joiner;
+        STATE.joiner = {
+          id: g.JoinerID || jid,
+          name: g.Name || name,
+          email: g.Email || email,
+          doj: g.DOJ || doj,
+          designation: g.Designation || desig,
+          site: g.Site || site,
+          dept: g.Department || dept,
+          hrbp: g.HRBP || hrbp,
+          token: STATE.token
+        };
+      }
+    } catch(e) {
+      // Proceed with URL params
+    }
+  }
+
+  // Also try localStorage
+  try {
+    const local = JSON.parse(localStorage.getItem('utopia_joiners') || '[]');
+    const lj = local.find(j => j.id === jid || j.email === email);
+    if (lj && !STATE.joiner.name) Object.assign(STATE.joiner, lj);
+  } catch(e) {}
+
+  if (!STATE.joiner.name && !STATE.joiner.email) {
+    showScreen('invalid');
+    return;
+  }
+
+  // Pre-fill known fields
+  STATE.formData.employeeNameCNIC = STATE.joiner.name || '';
+  STATE.formData.personalEmail    = STATE.joiner.email || '';
+  STATE.formData.linkedJoinerId   = STATE.joiner.id || '';
+
+  renderWelcome();
+  buildUI();
+  showScreen('form');
+  updateProgress();
+}
+
+function renderWelcome() {
+  const j = STATE.joiner;
+  const av = (j.name || '?').split(' ').map(w => w[0]).slice(0, 2).join('');
+  document.getElementById('welcomeAvatar').textContent = av;
+  document.getElementById('welcomeName').textContent = `Welcome, ${j.name || 'Employee'}!`;
+  document.getElementById('welcomeMeta').textContent = `${j.designation || 'Team Member'} · ${j.dept || '—'} · Please complete all sections accurately.`;
+  if (j.doj) document.getElementById('tagDOJ').textContent = `DOJ: ${formatDate(j.doj)}`;
+  if (j.site) document.getElementById('tagSite').textContent = j.site;
+  if (j.hrbp) document.getElementById('tagHRBP').textContent = `HRBP: ${j.hrbp}`;
+  if (j.designation) document.getElementById('tagDesig').textContent = j.designation;
+}
+
+/* ═══════════════════════════════════════════
+   BUILD STEP NAV + PAGES
+═══════════════════════════════════════════ */
+function buildUI() {
+  // Step nav
+  const nav = document.getElementById('stepNav');
+  nav.innerHTML = STEPS.map(s => `
+    <div class="step-nav-item" id="sni-${s.id}">
+      <div class="step-wrap">
+        <div class="step-dot" id="sd-${s.id}">${s.icon}</div>
+        <span class="step-label">${s.label}</span>
+      </div>
+    </div>
+  `).join('');
+
+  // Step pages
+  const pages = document.getElementById('stepPages');
+  pages.innerHTML = STEPS.map(s => `<div id="step-page-${s.id}" style="display:none">${buildStepContent(s.id)}</div>`).join('');
+
+  showStep(1);
+}
+
+function buildStepContent(step) {
+  switch(step) {
+    case 1: return stepPersonal();
+    case 2: return stepCNIC();
+    case 3: return stepFamily();
+    case 4: return stepContact();
+    case 5: return stepBank();
+    case 6: return stepEducation();
+    case 7: return stepExperience();
+    case 8: return stepDocuments();
+    case 9: return stepReview();
+    default: return '';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   STEP CONTENTS
+═══════════════════════════════════════════ */
+function stepPersonal() {
+  return `
+  <div class="section-card">
+    <div class="section-title"><div class="section-icon teal">👤</div>Personal Information</div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label class="form-label">Full Name (as per CNIC) <span class="req">*</span></label>
+        <input class="form-input" id="f_employeeNameCNIC" placeholder="Muhammad Ali Khan" value="${esc(STATE.formData.employeeNameCNIC||'')}">
+        <div class="form-error">Full name is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Personal Email <span class="req">*</span></label>
+        <input class="form-input" id="f_personalEmail" type="email" placeholder="you@example.com" value="${esc(STATE.formData.personalEmail||'')}">
+        <div class="form-error">Valid email is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date of Birth <span class="req">*</span></label>
+        <input class="form-input" id="f_dob" type="date" value="${esc(STATE.formData.dob||'')}">
+        <div class="form-error">Date of birth is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Gender <span class="req">*</span></label>
+        <select class="form-select" id="f_gender">
+          <option value="">-- Select --</option>
+          ${['Male','Female','Prefer not to say'].map(g=>`<option value="${g}" ${STATE.formData.gender===g?'selected':''}>${g}</option>`).join('')}
+        </select>
+        <div class="form-error">Gender is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nationality</label>
+        <input class="form-input" id="f_nationality" placeholder="Pakistani" value="${esc(STATE.formData.nationality||'Pakistani')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Religion</label>
+        <input class="form-input" id="f_religion" placeholder="Islam" value="${esc(STATE.formData.religion||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Marital Status</label>
+        <select class="form-select" id="f_maritalStatus">
+          <option value="">-- Select --</option>
+          ${['Single','Married','Divorced','Widowed'].map(m=>`<option value="${m}" ${STATE.formData.maritalStatus===m?'selected':''}>${m}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Number of Children</label>
+        <input class="form-input" id="f_numKids" type="number" min="0" placeholder="0" value="${esc(STATE.formData.numKids||'')}">
+      </div>
+    </div>
+  </div>
+  ${stepActions(1)}`;
+}
+
+function stepCNIC() {
+  return `
+  <div class="section-card">
+    <div class="section-title"><div class="section-icon blue">🪪</div>CNIC Information</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">CNIC Number <span class="req">*</span></label>
+        <input class="form-input" id="f_cnicNo" placeholder="XXXXX-XXXXXXX-X" maxlength="15" value="${esc(STATE.formData.cnicNo||'')}">
+        <div class="form-error">Valid CNIC is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">CNIC Issue Date <span class="req">*</span></label>
+        <input class="form-input" id="f_cnicIssued" type="date" value="${esc(STATE.formData.cnicIssued||'')}">
+        <div class="form-error">Issue date is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">CNIC Expiry Date <span class="req">*</span></label>
+        <input class="form-input" id="f_cnicExpiry" type="date" value="${esc(STATE.formData.cnicExpiry||'')}">
+        <div class="form-error">Expiry date is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Province</label>
+        <select class="form-select" id="f_province">
+          <option value="">-- Select --</option>
+          ${['Punjab','Sindh','KPK','Balochistan','Islamabad (ICT)','AJK','Gilgit-Baltistan'].map(p=>`<option value="${p}" ${STATE.formData.province===p?'selected':''}>${p}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Address as per CNIC <span class="req">*</span></label>
+        <textarea class="form-textarea" id="f_addressCNIC" placeholder="House No, Street, City, Province">${esc(STATE.formData.addressCNIC||'')}</textarea>
+        <div class="form-error">CNIC address is required</div>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Current Residential Address</label>
+        <textarea class="form-textarea" id="f_currentAddress" placeholder="Current residence address (if different)">${esc(STATE.formData.currentAddress||'')}</textarea>
+      </div>
+    </div>
+  </div>
+  ${stepActions(2)}`;
+}
+
+function stepFamily() {
+  return `
+  <div class="section-card">
+    <div class="section-title"><div class="section-icon amber">👨‍👩‍👧</div>Family Information</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Father / Guardian Name <span class="req">*</span></label>
+        <input class="form-input" id="f_guardianName" placeholder="Father or guardian full name" value="${esc(STATE.formData.guardianName||'')}">
+        <div class="form-error">Guardian name is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mother's Name</label>
+        <input class="form-input" id="f_motherName" placeholder="Mother's full name" value="${esc(STATE.formData.motherName||'')}">
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section-title" style="margin-bottom:16px"><div class="section-icon rose">🆘</div>Emergency Contact</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Emergency Contact Name <span class="req">*</span></label>
+        <input class="form-input" id="f_emergencyName" placeholder="Full name" value="${esc(STATE.formData.emergencyName||'')}">
+        <div class="form-error">Emergency contact name is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Emergency Contact Number <span class="req">*</span></label>
+        <input class="form-input" id="f_emergencyNo" placeholder="+92 3XX XXXXXXX" value="${esc(STATE.formData.emergencyNo||'')}">
+        <div class="form-error">Emergency contact number is required</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section-title" style="margin-bottom:16px"><div class="section-icon violet">📋</div>Next of Kin (NOK)</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">NOK Full Name</label>
+        <input class="form-input" id="f_nokName" placeholder="Full name" value="${esc(STATE.formData.nokName||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">NOK Contact Number</label>
+        <input class="form-input" id="f_nokContact" placeholder="+92 3XX XXXXXXX" value="${esc(STATE.formData.nokContact||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">NOK Relationship</label>
+        <select class="form-select" id="f_nokRelation">
+          <option value="">-- Select --</option>
+          ${['Father','Mother','Spouse','Sibling','Child','Other'].map(r=>`<option value="${r}" ${STATE.formData.nokRelation===r?'selected':''}>${r}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+  </div>
+  ${stepActions(3)}`;
+}
+
+function stepContact() {
+  return `
+  <div class="section-card">
+    <div class="section-title"><div class="section-icon teal">📞</div>Contact Information</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Primary Cell Number <span class="req">*</span></label>
+        <input class="form-input" id="f_cellNo1" placeholder="+92 3XX XXXXXXX" value="${esc(STATE.formData.cellNo1||'')}">
+        <div class="form-error">Cell number is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Secondary Cell Number</label>
+        <input class="form-input" id="f_cellNo2" placeholder="+92 3XX XXXXXXX" value="${esc(STATE.formData.cellNo2||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Landline Number</label>
+        <input class="form-input" id="f_landline" placeholder="021-XXXXXXXX" value="${esc(STATE.formData.landline||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">LinkedIn Profile</label>
+        <input class="form-input" id="f_linkedin" placeholder="https://linkedin.com/in/..." value="${esc(STATE.formData.linkedin||'')}">
+      </div>
+    </div>
+  </div>
+  ${stepActions(4)}`;
+}
+
+function stepBank() {
+  return `
+  <div class="section-card">
+    <div class="section-title"><div class="section-icon green">🏦</div>Bank / Salary Account</div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label class="form-label">Bank Account Title (as per bank records) <span class="req">*</span></label>
+        <input class="form-input" id="f_bankAccountName" placeholder="Your full name as in bank records" value="${esc(STATE.formData.bankAccountName||'')}">
+        <div class="form-error">Bank account title is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bank Account Number <span class="req">*</span></label>
+        <input class="form-input" id="f_bankAccountNo" placeholder="Account number" value="${esc(STATE.formData.bankAccountNo||'')}">
+        <div class="form-error">Account number is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bank Name & Branch</label>
+        <input class="form-input" id="f_bankBranch" placeholder="e.g. HBL Main Branch Karachi" value="${esc(STATE.formData.bankBranch||'')}">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">IBAN (International Bank Account Number) <span class="req">*</span></label>
+        <input class="form-input" id="f_bankIBAN" placeholder="PK00XXXX0000000000000000" value="${esc(STATE.formData.bankIBAN||'')}">
+        <div class="form-hint">24-character IBAN — e.g. PK36SCBL0000001123456702</div>
+        <div class="form-error">IBAN is required</div>
+      </div>
+    </div>
+  </div>
+  ${stepActions(5)}`;
+}
+
+function stepEducation() {
+  return `
+  <div class="section-card">
+    <div class="section-title"><div class="section-icon violet">🎓</div>Education</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Highest Qualification <span class="req">*</span></label>
+        <select class="form-select" id="f_highestQual">
+          <option value="">-- Select --</option>
+          ${['Matric / O-Levels','Intermediate / A-Levels','Bachelors','Masters','M.Phil','PhD','Diploma','Other'].map(q=>`<option value="${q}" ${STATE.formData.highestQual===q?'selected':''}>${q}</option>`).join('')}
+        </select>
+        <div class="form-error">Qualification is required</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Professional Qualification</label>
+        <input class="form-input" id="f_profQual" placeholder="e.g. CMA, ACCA, CPA, PMP" value="${esc(STATE.formData.profQual||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">University / Institute</label>
+        <input class="form-input" id="f_university" placeholder="e.g. University of Karachi" value="${esc(STATE.formData.university||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Specialization / Major</label>
+        <input class="form-input" id="f_specialization" placeholder="e.g. Business Administration" value="${esc(STATE.formData.specialization||'')}">
+      </div>
+    </div>
+  </div>
+  ${stepActions(6)}`;
+}
+
+function stepExperience() {
+  return `
+  <div class="section-card">
+    <div class="section-title"><div class="section-icon blue">💼</div>Previous Employment</div>
+    <div style="font-size:12.5px;color:var(--textD);margin-bottom:16px;line-height:1.6">If this is your first job, leave these fields blank.</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Last Employer</label>
+        <input class="form-input" id="f_lastEmployer" placeholder="Company / Organization name" value="${esc(STATE.formData.lastEmployer||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Last Designation</label>
+        <input class="form-input" id="f_lastDesig" placeholder="Your previous role" value="${esc(STATE.formData.lastDesig||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Previous HR Email</label>
+        <input class="form-input" id="f_lastHREmail" type="email" placeholder="hr@previouscompany.com" value="${esc(STATE.formData.lastHREmail||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Previous HR Contact</label>
+        <input class="form-input" id="f_lastHRContact" placeholder="+92 3XX XXXXXXX" value="${esc(STATE.formData.lastHRContact||'')}">
+      </div>
+    </div>
+  </div>
+  ${stepActions(7)}`;
+}
+
+function stepDocuments() {
+  const docFields = [
+    { key: 'cnic',             label: 'CNIC Copy (Front & Back)',     req: true,  accept: 'image/*,.pdf', multi: true },
+    { key: 'educationDocs',    label: 'Educational Documents',         req: true,  accept: 'image/*,.pdf', multi: true },
+    { key: 'experienceDocs',   label: 'Experience Letters',            req: false, accept: 'image/*,.pdf', multi: true },
+    { key: 'resignationLetter',label: 'Resignation Letter',            req: false, accept: 'image/*,.pdf', multi: false },
+    { key: 'ibanDoc',          label: 'Bank / IBAN Document',          req: true,  accept: 'image/*,.pdf', multi: false },
+    { key: 'photo',            label: 'Passport-size Photo',           req: true,  accept: 'image/*',      multi: false },
+  ];
+
+  return `
+  <div class="section-card">
+    <div class="section-title"><div class="section-icon amber">📄</div>Document Upload</div>
+    <div style="background:rgba(0,196,167,0.05);border:1px solid rgba(0,196,167,0.15);border-radius:8px;padding:12px 16px;font-size:12.5px;color:var(--textD);line-height:1.7;margin-bottom:20px">
+      <strong style="color:var(--accent)">Accepted formats:</strong> PDF, JPG, PNG, GIF, WEBP · Max 10MB per file
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      ${docFields.map(f => `
+        <div>
+          <div class="form-label" style="margin-bottom:8px">${f.label}${f.req?'<span class="req"> *</span>':' <span style="color:var(--slate);font-size:10px">(optional)</span>'}</div>
+          <div class="upload-zone" id="uz-${f.key}" onclick="triggerUpload('${f.key}')">
+            <input type="file" id="uf-${f.key}" accept="${f.accept}" ${f.multi?'multiple':''} onchange="handleFiles('${f.key}',this.files)">
+            <div class="upload-icon">📎</div>
+            <div class="upload-label"><strong>Click to upload</strong> or drag & drop<br>${f.label}</div>
+          </div>
+          <div class="upload-list" id="ul-${f.key}"></div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+  ${stepActions(8)}`;
+}
+
+function stepReview() {
+  return `
+  <div class="section-card">
+    <div class="section-title"><div class="section-icon green">✅</div>Review & Submit</div>
+    <div style="background:rgba(0,196,167,0.05);border:1px solid rgba(0,196,167,0.2);border-radius:10px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:var(--textD);line-height:1.7">
+      Please review your information below. If anything needs to be changed, click <strong style="color:var(--text)">Back</strong> to edit.<br>
+      Once satisfied, click <strong style="color:var(--accent)">Submit Form</strong> to complete your onboarding.
+    </div>
+    <div id="reviewContent"></div>
+    <div style="margin-top:20px;display:flex;gap:8px;align-items:center">
+      <input type="checkbox" id="declarationCheck" style="accent-color:var(--accent);width:16px;height:16px">
+      <label for="declarationCheck" style="font-size:13px;color:var(--textD);cursor:pointer">
+        I declare that all information provided is accurate and complete to the best of my knowledge.
+      </label>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn btn-secondary" onclick="goStep(${STEPS.length-1})">← Back</button>
+    <div>
+      <span class="step-counter">Step ${STEPS.length} of ${STEPS.length}</span>
+      <button class="btn btn-primary btn-lg" id="submitBtn" onclick="submitForm()" style="margin-left:16px">✅ Submit Form</button>
+    </div>
+  </div>`;
+}
+
+function stepActions(step) {
+  const isFirst = step === 1;
+  const isLast  = step === STEPS.length - 1;
+  return `
+  <div class="step-actions">
+    <button class="btn btn-secondary" onclick="goStep(${step-1})" ${isFirst?'style="visibility:hidden"':''}>← Back</button>
+    <span class="step-counter">Step ${step} of ${STEPS.length}</span>
+    <button class="btn btn-primary" onclick="goNext(${step})">Next →</button>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════ */
+function showStep(n) {
+  STEPS.forEach(s => {
+    const page = document.getElementById(`step-page-${s.id}`);
+    const dot  = document.getElementById(`sd-${s.id}`);
+    const sni  = document.getElementById(`sni-${s.id}`);
+    if (!page) return;
+
+    page.style.display = s.id === n ? 'block' : 'none';
+
+    sni.className = 'step-nav-item' +
+      (s.id === n ? ' active' : s.id < n ? ' done' : '');
+    sni.className += s.id < n ? ' done' : '';
+
+    if (s.id < n) {
+      sni.className = 'step-nav-item done';
+      dot.textContent = '✓';
+    } else if (s.id === n) {
+      sni.className = 'step-nav-item active';
+      dot.textContent = s.icon;
+    } else {
+      sni.className = 'step-nav-item';
+      dot.textContent = s.icon;
+    }
+  });
+
+  STATE.step = n;
+  updateProgress();
+
+  if (n === STEPS.length) buildReview();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goStep(n) {
+  if (n < 1 || n > STEPS.length) return;
+  collectCurrentStep();
+  showStep(n);
+}
+
+function goNext(step) {
+  if (!validateStep(step)) return;
+  collectCurrentStep();
+  showStep(step + 1);
+}
+
+function updateProgress() {
+  const pct = Math.round(((STATE.step - 1) / (STEPS.length - 1)) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+/* ═══════════════════════════════════════════
+   COLLECT FIELDS
+═══════════════════════════════════════════ */
+function collectCurrentStep() {
+  const fields = document.querySelectorAll('[id^="f_"]');
+  fields.forEach(el => {
+    const key = el.id.replace('f_', '');
+    STATE.formData[key] = el.value;
+  });
+}
+
+/* ═══════════════════════════════════════════
+   VALIDATION
+═══════════════════════════════════════════ */
+function validateStep(step) {
+  let ok = true;
+
+  const require = (id, test) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const grp = el.closest('.form-group');
+    if (!grp) return;
+    const passes = test ? test(el.value) : el.value.trim() !== '';
+    grp.classList.toggle('error', !passes);
+    if (!passes) ok = false;
+  };
+
+  if (step === 1) {
+    require('f_employeeNameCNIC');
+    require('f_personalEmail', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+    require('f_dob');
+    require('f_gender');
+  }
+  if (step === 2) {
+    require('f_cnicNo', v => v.replace(/-/g,'').length >= 13);
+    require('f_cnicIssued');
+    require('f_cnicExpiry');
+    require('f_addressCNIC');
+  }
+  if (step === 3) {
+    require('f_guardianName');
+    require('f_emergencyName');
+    require('f_emergencyNo');
+  }
+  if (step === 4) {
+    require('f_cellNo1');
+  }
+  if (step === 5) {
+    require('f_bankAccountName');
+    require('f_bankAccountNo');
+    require('f_bankIBAN');
+  }
+  if (step === 6) {
+    require('f_highestQual');
+  }
+
+  if (!ok) showToast('error', 'Required Fields', 'Please fill in all required fields.', '⚠️');
+  return ok;
+}
+
+/* ═══════════════════════════════════════════
+   FILE UPLOADS
+═══════════════════════════════════════════ */
+function triggerUpload(key) {
+  document.getElementById(`uf-${key}`)?.click();
+}
+
+function handleFiles(key, files) {
+  if (!files || !files.length) return;
+  STATE.uploads[key] = STATE.uploads[key] || [];
+  STATE.uploadMeta[key] = STATE.uploadMeta[key] || [];
+  Array.from(files).forEach(f => {
+    if (f.size > 10 * 1024 * 1024) { showToast('error', 'File Too Large', f.name + ' exceeds 10MB.', '❌'); return; }
+    STATE.uploads[key].push(f);
+    STATE.uploadMeta[key].push({ name: f.name, size: f.size, type: f.type });
+  });
+  renderUploadList(key);
+}
+
+function renderUploadList(key) {
+  const list = document.getElementById(`ul-${key}`);
+  if (!list) return;
+  const files = STATE.uploadMeta[key] || [];
+  if (!files.length) { list.innerHTML = ''; return; }
+  list.innerHTML = files.map((f, i) => `
+    <div class="upload-item">
+      <span style="font-size:15px">📎</span>
+      <span class="upload-item-name">${esc(f.name)}</span>
+      <span class="upload-item-size">${formatBytes(f.size)}</span>
+      <button class="upload-item-remove" onclick="removeFile('${key}',${i})" title="Remove">✕</button>
+    </div>
+  `).join('');
+}
+
+function removeFile(key, idx) {
+  STATE.uploads[key]?.splice(idx, 1);
+  STATE.uploadMeta[key]?.splice(idx, 1);
+  renderUploadList(key);
+}
+
+/* ═══════════════════════════════════════════
+   BUILD REVIEW
+═══════════════════════════════════════════ */
+function buildReview() {
+  collectCurrentStep();
+  const d = STATE.formData;
+  const j = STATE.joiner;
+  const row = (label, val) => val ? `<div class="info-box-row"><span class="info-box-label">${label}</span><span class="info-box-val">${esc(String(val))}</span></div>` : '';
+  const sec = (title, content) => `<div style="margin-bottom:16px"><div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px">${title}</div>${content}</div>`;
+
+  const docSummary = Object.entries(STATE.uploadMeta).map(([k, files]) =>
+    files.length ? `<div class="info-box-row"><span class="info-box-label">${k}</span><span class="info-box-val" style="color:var(--emerald)">✅ ${files.length} file(s)</span></div>` :
+    `<div class="info-box-row"><span class="info-box-label">${k}</span><span class="info-box-val" style="color:var(--textD)">— Not uploaded</span></div>`
+  ).join('');
+
+  document.getElementById('reviewContent').innerHTML = `
+    <div class="info-box" style="max-width:none">
+      ${sec('👤 Joining Info',
+        row('Joiner ID', j.id) +
+        row('Name', j.name) +
+        row('Date of Joining', formatDate(j.doj)) +
+        row('Designation', j.designation) +
+        row('Site', j.site) +
+        row('HRBP', j.hrbp)
+      )}
+      ${sec('📋 Personal',
+        row('Full Name (CNIC)', d.employeeNameCNIC) +
+        row('Personal Email', d.personalEmail) +
+        row('DOB', formatDate(d.dob)) +
+        row('Gender', d.gender) +
+        row('Nationality', d.nationality) +
+        row('Marital Status', d.maritalStatus)
+      )}
+      ${sec('🪪 CNIC',
+        row('CNIC No', d.cnicNo) +
+        row('Issue Date', formatDate(d.cnicIssued)) +
+        row('Expiry Date', formatDate(d.cnicExpiry)) +
+        row('Province', d.province) +
+        row('CNIC Address', d.addressCNIC)
+      )}
+      ${sec('📞 Contact',
+        row('Cell No 1', d.cellNo1) +
+        row('Cell No 2', d.cellNo2) +
+        row('Landline', d.landline)
+      )}
+      ${sec('🏦 Bank',
+        row('Account Title', d.bankAccountName) +
+        row('Account No', d.bankAccountNo) +
+        row('IBAN', d.bankIBAN) +
+        row('Branch', d.bankBranch)
+      )}
+      ${sec('🎓 Education',
+        row('Highest Qualification', d.highestQual) +
+        row('Professional Qual', d.profQual) +
+        row('University', d.university)
+      )}
+      ${sec('💼 Experience',
+        row('Last Employer', d.lastEmployer) +
+        row('Last Designation', d.lastDesig)
+      )}
+      ${sec('📄 Documents Uploaded',docSummary||'<div class="info-box-row" style="color:var(--textD)">No documents uploaded</div>')}
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════════
+   SUBMIT
+═══════════════════════════════════════════ */
+async function submitForm() {
+  const check = document.getElementById('declarationCheck');
+  if (!check?.checked) {
+    showToast('error', 'Declaration Required', 'Please check the declaration box to confirm.', '⚠️');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Submitting…'; }
+
+  collectCurrentStep();
+
+  const j = STATE.joiner;
+  const d = STATE.formData;
+
+  const payload = {
+    action: 'SUBMIT_FORM',
+    // Joiner linkage
+    linkedJoinerId:  j.id  || '',
+    joinerId:        j.id  || '',
+    token:           j.token || STATE.token || '',
+    // Personal
+    employeeNameCNIC:  d.employeeNameCNIC || j.name || '',
+    personalEmail:     d.personalEmail    || j.email || '',
+    dob:               d.dob              || '',
+    gender:            d.gender           || '',
+    nationality:       d.nationality      || '',
+    religion:          d.religion         || '',
+    maritalStatus:     d.maritalStatus    || '',
+    numKids:           d.numKids          || '',
+    // CNIC
+    cnicNo:            d.cnicNo           || '',
+    cnicIssued:        d.cnicIssued       || '',
+    cnicExpiry:        d.cnicExpiry       || '',
+    province:          d.province         || '',
+    addressCNIC:       d.addressCNIC      || '',
+    currentAddress:    d.currentAddress   || '',
+    // Family
+    guardianName:      d.guardianName     || '',
+    motherName:        d.motherName       || '',
+    emergencyName:     d.emergencyName    || '',
+    emergencyNo:       d.emergencyNo      || '',
+    nokName:           d.nokName          || '',
+    nokContact:        d.nokContact       || '',
+    nokRelation:       d.nokRelation      || '',
+    // Contact
+    cellNo1:           d.cellNo1          || '',
+    cellNo2:           d.cellNo2          || '',
+    landline:          d.landline         || '',
+    linkedin:          d.linkedin         || '',
+    // Bank
+    bankAccountName:   d.bankAccountName  || '',
+    bankAccountNo:     d.bankAccountNo    || '',
+    bankBranch:        d.bankBranch       || '',
+    bankIBAN:          d.bankIBAN         || '',
+    // Education
+    highestQual:       d.highestQual      || '',
+    profQual:          d.profQual         || '',
+    university:        d.university       || '',
+    specialization:    d.specialization   || '',
+    // Experience
+    lastEmployer:      d.lastEmployer     || '',
+    lastDesig:         d.lastDesig        || '',
+    lastHREmail:       d.lastHREmail      || '',
+    lastHRContact:     d.lastHRContact    || '',
+    // Upload metadata (not raw binary)
+    uploadedFiles:     JSON.stringify(STATE.uploadMeta),
+    submittedAt:       new Date().toISOString(),
+  };
+
+  // Save to localStorage for HRBP/HROPS portal pickup
+  try {
+    const forms = JSON.parse(localStorage.getItem(EF_STORAGE_KEY) || '[]');
+    const idx = forms.findIndex(f => (f.personalEmail||'').toLowerCase() === payload.personalEmail.toLowerCase());
+    const localPayload = { ...payload, uploadedFiles: STATE.uploadMeta }; // store as object locally
+    if (idx >= 0) { forms[idx] = localPayload; } else { forms.unshift(localPayload); }
+    localStorage.setItem(EF_STORAGE_KEY, JSON.stringify(forms));
+  } catch(e) {}
+
+  // Push to GAS
+  let gasOk = false;
+  try {
+    const r = await gasPost(payload);
+    gasOk = r && r.success;
+  } catch(e) {}
+
+  // Show success
+  const successInfo = document.getElementById('successInfo');
+  if (successInfo) {
+    successInfo.innerHTML = `
+      <div class="info-box-row"><span class="info-box-label">Employee Name</span><span class="info-box-val">${esc(payload.employeeNameCNIC)}</span></div>
+      <div class="info-box-row"><span class="info-box-label">Personal Email</span><span class="info-box-val">${esc(payload.personalEmail)}</span></div>
+      <div class="info-box-row"><span class="info-box-label">Joiner ID</span><span class="info-box-val">${esc(j.id || '—')}</span></div>
+      <div class="info-box-row"><span class="info-box-label">Date of Joining</span><span class="info-box-val">${formatDate(j.doj)}</span></div>
+      <div class="info-box-row"><span class="info-box-label">HRBP</span><span class="info-box-val">${esc(j.hrbp || '—')}</span></div>
+      <div class="info-box-row"><span class="info-box-label">Google Sheets</span><span class="info-box-val" style="color:${gasOk?'var(--emerald)':'var(--amber)'}">${gasOk?'✅ Synced':'⚠ Saved locally (will sync)'}</span></div>
+    `;
+  }
+
+  showScreen('success');
+
+  // Broadcast to open HRBP/HROPS portals via BroadcastChannel
+  try {
+    const bc = new BroadcastChannel('utopia_hr_sync');
+    bc.postMessage({ type: 'FORM_SUBMITTED', payload: { linkedJoinerId: j.id, email: payload.personalEmail, name: payload.employeeNameCNIC, ts: payload.submittedAt } });
+    bc.close();
+  } catch(e) {}
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN MANAGER
+═══════════════════════════════════════════ */
+function showScreen(name) {
+  document.getElementById('loadingScreen').style.display = name === 'loading' ? '' : 'none';
+  document.getElementById('invalidScreen').style.display = name === 'invalid' ? '' : 'none';
+  document.getElementById('formApp').style.display       = name === 'form'    ? '' : 'none';
+  document.getElementById('successScreen').style.display = name === 'success' ? '' : 'none';
+}
+
+/* ═══════════════════════════════════════════
+   GAS API
+═══════════════════════════════════════════ */
+async function gasGet(params) {
+  try {
+    const p = Object.assign({ apiKey: API_KEY }, params);
+    const resp = await fetch(GAS_URL + '?' + new URLSearchParams(p).toString(), { method: 'GET' });
+    return await resp.json();
+  } catch(e) { return { success: false, error: e.message }; }
+}
+
+async function gasPost(data) {
+  try {
+    const resp = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({ apiKey: API_KEY }, data))
+    });
+    return await resp.json();
+  } catch(e) { return { success: false, error: e.message }; }
+}
+
+/* ═══════════════════════════════════════════
+   DRAG & DROP SUPPORT
+═══════════════════════════════════════════ */
+document.addEventListener('dragover', e => {
+  e.preventDefault();
+  const zone = e.target.closest('.upload-zone');
+  if (zone) zone.classList.add('drag');
+});
+document.addEventListener('dragleave', e => {
+  const zone = e.target.closest('.upload-zone');
+  if (zone) zone.classList.remove('drag');
+});
+document.addEventListener('drop', e => {
+  e.preventDefault();
+  const zone = e.target.closest('.upload-zone');
+  if (!zone) return;
+  zone.classList.remove('drag');
+  const key = zone.id.replace('uz-','');
+  handleFiles(key, e.dataTransfer.files);
+});
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+function showToast(type, title, msg, icon) {
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<div class="toast-icon">${icon||'ℹ️'}</div><div><div class="toast-body-title">${title}</div><div class="toast-body-msg">${msg}</div></div>`;
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(() => t.remove(), 4500);
+}
+
+/* ═══════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════ */
+function esc(str) { return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function formatDate(d) { if(!d) return '—'; try { const dt=new Date(d); if(isNaN(dt)) return d; return dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }catch(e){return d;} }
+function formatBytes(b) { if(b<1024) return b+'B'; if(b<1048576) return (b/1024).toFixed(1)+'KB'; return (b/1048576).toFixed(1)+'MB'; }
+
+/* ═══════════════════════════════════════════
+   BOOT
+═══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
